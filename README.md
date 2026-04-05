@@ -6,7 +6,7 @@ A patient education website for hand transplant recipients, exploring the scienc
 
 ## About
 
-This site was originally created and published in 2013 by Amy Dixon in partnership with Johns Hopkins University School of Medicine and Dr. Gerald Brandacher, Professor and Scientific Director of the Reconstructive Transplantation Program in the Department of Plastic and Reconstructive Surgery at JHUSOM. In its first iteration, it was built entirely without AI using Twitter Bootstrap and Raphaël.js. This reconstruction was made using a combination of the Wayback Machine and Claude Code.
+This site was originally created and published in 2013 by Amy Dixon in partnership with Johns Hopkins University School of Medicine and Dr. Gerald Brandacher, Professor and Scientific Director of the Reconstructive Transplantation Program in the Department of Plastic and Reconstructive Surgery at JHUSOM. In its first iteration, it was built using Twitter Bootstrap and Raphaël.js. This reconstruction was made using a combination of the Wayback Machine and Claude Code.
 
 The site serves as an educational resource for hand transplant patients, explaining the complex biological processes behind nerve regeneration in accessible, visual terms. The original version was navigable via hover states only, so that any patients using it would not have to click if they were not (yet) able to. The site is a still work in progress to become a faithful recreation of the original.
 
