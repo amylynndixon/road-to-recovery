@@ -526,22 +526,20 @@
         tooltip.classList.add('visible');
         activeLink = link;
 
-        // Position directly above the term
+        // Position directly above the term using viewport coords (fixed positioning)
         const rect = link.getBoundingClientRect();
-        // Reset position so we can measure tooltip size
+        // Measure tooltip size offscreen
         tooltip.style.left = '-9999px';
         tooltip.style.top = '0';
         const tipRect = tooltip.getBoundingClientRect();
 
-        // Convert viewport coords to document coords
-        let left = rect.left + window.pageXOffset + (rect.width / 2) - (tipRect.width / 2);
-        let top = rect.top + window.pageYOffset - tipRect.height - 4;
+        let left = rect.left + (rect.width / 2) - (tipRect.width / 2);
+        let top = rect.top - tipRect.height - 4;
 
-        // Keep within viewport horizontally
-        const scrollX = window.pageXOffset;
-        if (left < scrollX + 8) left = scrollX + 8;
-        if (left + tipRect.width > scrollX + window.innerWidth - 8) {
-          left = scrollX + window.innerWidth - tipRect.width - 8;
+        // Keep within viewport
+        if (left < 8) left = 8;
+        if (left + tipRect.width > window.innerWidth - 8) {
+          left = window.innerWidth - tipRect.width - 8;
         }
 
         tooltip.style.left = left + 'px';
