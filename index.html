@@ -384,6 +384,8 @@
           <h1 class="main-heading-seven">Glossary of Terms</h1>
           <p class="sub-heading-four">hover over a term to go back to where it was first referenced in the text</p>
 
+          <button id="quiz-launch-btn" class="quiz-launch-btn" onclick="openQuiz()">Take the quiz to check understanding!</button>
+
           <div class="glossary-list">
             <p><a href="#peripheralNervesBack" class="glossary-1" id="peripheralNerves">Peripheral nerves:</a> <span class="col-white">nerves in the body that belong to the peripheral nervous system; everything but the brain and spinal cord</span></p>
 
@@ -687,6 +689,280 @@
           });
         });
     })();
+  </script>
+
+  <!-- Subtle parallax on hero background -->
+  <script>
+    (function () {
+      var hero = document.getElementById('contact');
+      var speed = 0.4; // 0 = fixed, 1 = normal scroll, 0.4 = slow drift
+
+      window.addEventListener('scroll', function () {
+        var scrollY = window.pageYOffset;
+        if (scrollY <= hero.offsetHeight + hero.offsetTop) {
+          hero.style.backgroundPositionY = 'calc(50% + ' + (scrollY * speed) + 'px)';
+        }
+      });
+    })();
+  </script>
+
+  <!-- Quiz Modal -->
+  <div id="quiz-overlay" class="quiz-overlay" onclick="if(event.target===this)closeQuiz()">
+    <div class="quiz-modal">
+      <button class="quiz-close" onclick="closeQuiz()" aria-label="Close quiz">&times;</button>
+      <div id="quiz-content"></div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    /* ================================================
+       QUESTION POOL — 60 mixed questions
+       Types: "mc-def"   = given definition, pick term
+              "mc-term"  = given term, pick definition
+              "tf"       = true/false
+       ================================================ */
+    var QUESTIONS = [
+      // --- MC: Definition → Term (20) ---
+      { type:'mc-def', def:'nerves in the body that belong to the peripheral nervous system; everything but the brain and spinal cord', answer:'Peripheral nerves', choices:['Peripheral nerves','Motor neuron','Sensory neuron','Schwann cells'] },
+      { type:'mc-def', def:'specialized cells in the nervous system that communicate via electrical and chemical signals; also known as nerve cells', answer:'Neurons', choices:['Axon','Neurons','Dendrites','Schwann cells'] },
+      { type:'mc-def', def:'neuron in the central nervous system whose axons travel outside of the central nervous system to control muscles, producing movement', answer:'Motor neuron', choices:['Sensory neuron','Lower motor neuron','Motor neuron','Upper motor neuron'] },
+      { type:'mc-def', def:'neuron in the central nervous system that senses sensory input and relays the information to the sensory cortex in the brain', answer:'Sensory neuron', choices:['Motor neuron','Sensory neuron','Peripheral nerves','Dendrites'] },
+      { type:'mc-def', def:'main part of the neuron where dendrites branch; contains organelles and the cell\'s nucleus', answer:'Cell body', choices:['Axon terminal','Myelin sheath','Cell body','Dendrites'] },
+      { type:'mc-def', def:'branches that project from the cell bodies of neurons; can inhibit or stimulate other neurons', answer:'Dendrites', choices:['Axon','Dendrites','Schwann cells','Cell body'] },
+      { type:'mc-def', def:'a long, slender projection of a neuron that sends impulses away from the neuron\'s cell body; also known as a nerve fiber', answer:'Axon', choices:['Dendrites','Myelin sheath','Axon','Axon terminal'] },
+      { type:'mc-def', def:'distal terminations of the branches of an axon; release chemicals', answer:'Axon terminal', choices:['Axon terminal','Cell body','Dendrites','Schwann cells'] },
+      { type:'mc-def', def:'motor neurons that originate in the motor region of the cortex; carry motor information down to the final common pathway', answer:'Upper motor neuron', choices:['Lower motor neuron','Sensory neuron','Upper motor neuron','Motor neuron'] },
+      { type:'mc-def', def:'motor neurons connecting the brainstem and spinal cord to muscle fibers', answer:'Lower motor neuron', choices:['Upper motor neuron','Lower motor neuron','Peripheral nerves','Sensory neuron'] },
+      { type:'mc-def', def:'insulating layer of Schwann cells that covers the axons of motor and sensory neurons; primary function is to speed up neural impulses and protect the axon', answer:'Myelin sheath', choices:['Schwann cells','Axon','Myelin sheath','Cell body'] },
+      { type:'mc-def', def:'cells that maintain homeostasis in the nervous system by insulating neurons, providing support, aiding in nerve regeneration, and destroying pathogens', answer:'Schwann cells', choices:['Schwann cells','Neurons','Dendrites','Myelin sheath'] },
+      { type:'mc-def', def:'the process of growth and repair in the peripheral nervous system; nerves may grow at a rate of up to one millimeter per day', answer:'Nerve regeneration', choices:['Wallerian degeneration','Cortical reintegration','Nerve regeneration','Hand transplant surgery'] },
+      { type:'mc-def', def:'axon degeneration that occurs distal to a nerve cut or crush injury', answer:'Wallerian degeneration', choices:['Nerve regeneration','Wallerian degeneration','Cortical reintegration','Phantom limb pain'] },
+      { type:'mc-def', def:'neural reorganization that occurs in the brain in response to hand transplantation', answer:'Cortical reintegration', choices:['Cortical reintegration','Nerve regeneration','Homunculus','Primary motor cortex'] },
+      { type:'mc-def', def:'primary motor area of the brain contributing to generating neural impulses that control the execution of movement', answer:'Primary motor cortex', choices:['Primary somatosensory cortex','Homunculus','Primary motor cortex','Cortical reintegration'] },
+      { type:'mc-def', def:'the main sensory receptive area for the sense of touch', answer:'Primary somatosensory cortex', choices:['Primary motor cortex','Primary somatosensory cortex','Homunculus','Cortical reintegration'] },
+      { type:'mc-def', def:'sensation that an amputated or missing limb is still attached to the body', answer:'Phantom limb pain', choices:['Cortical reintegration','Wallerian degeneration','Nerve regeneration','Phantom limb pain'] },
+      { type:'mc-def', def:'an MRI procedure that measures brain activity by detecting associated changes in blood flow', answer:'fMRI', choices:['TMS','fMRI','Primary motor cortex','Cortical reintegration'] },
+      { type:'mc-def', def:'noninvasive method of measuring brain activity that uses a magnetic field to induce polarization of neurons', answer:'TMS', choices:['fMRI','TMS','Primary somatosensory cortex','Homunculus'] },
+
+      // --- MC: Term → Definition (20) ---
+      { type:'mc-term', term:'Homunculus', answer:'a representation of a human being used in various fields of study', choices:['a representation of a human being used in various fields of study','neural reorganization in the brain after hand transplantation','the main sensory receptive area for touch','a type of splint used after surgery'] },
+      { type:'mc-term', term:'Hand transplant surgery', answer:'surgery in which a hand from one human is transplanted onto another', choices:['surgery in which a hand from one human is transplanted onto another','the process of nerve regeneration after amputation','surgery to repair damaged myelin sheaths','a procedure that uses magnetic fields to measure brain activity'] },
+      { type:'mc-term', term:'Post-operative splint', answer:'splint applied immediately after surgery to protect tissues and properly position the limbs during healing', choices:['splint applied immediately after surgery to protect tissues and properly position the limbs during healing','splint that blocks hyperextension of knuckle joints','splint that uses a pulley system to facilitate extensor movement','early movement exercises performed by a hand therapist'] },
+      { type:'mc-term', term:'Early protective motion (EPM)', answer:'early movement exercises performed by a hand therapist to facilitate healing and preserve soft tissue integrity', choices:['early movement exercises performed by a hand therapist to facilitate healing and preserve soft tissue integrity','when a therapist moves the joint through range of motion with no patient effort','splint applied immediately after surgery','the process of nerve growth at one millimeter per day'] },
+      { type:'mc-term', term:'Passive range of motion (PROM)', answer:'when a therapist moves the joint through the range of motion with no effort from the patient', choices:['when a therapist moves the joint through the range of motion with no effort from the patient','early movement exercises to facilitate healing','splint that uses a pulley system for extensor muscles','the process of nerve regeneration after injury'] },
+      { type:'mc-term', term:'Crane-outrigger splint', answer:'splint that supports bones of the forearm while protecting extensors from shortening; uses a pulley system', choices:['splint that supports bones of the forearm while protecting extensors from shortening; uses a pulley system','splint applied immediately after surgery to protect tissues','smaller splint that blocks hyperextension of knuckle joints','early movement exercises performed by a therapist'] },
+      { type:'mc-term', term:'Anti-claw (dorsal hood) splint', answer:'smaller splint used months after surgery; blocks hyperextension of knuckle (MCP) joints', choices:['smaller splint used months after surgery; blocks hyperextension of knuckle (MCP) joints','splint that uses a pulley system to facilitate extensor movement','splint applied immediately after surgery','insulating layer covering motor and sensory axons'] },
+      { type:'mc-term', term:'Peripheral nerves', answer:'nerves belonging to the peripheral nervous system — everything but the brain and spinal cord', choices:['nerves belonging to the peripheral nervous system — everything but the brain and spinal cord','specialized cells that communicate via electrical and chemical signals','neurons whose axons control muscles and produce movement','branches projecting from cell bodies of neurons'] },
+      { type:'mc-term', term:'Axon', answer:'a long, slender projection of a neuron that sends impulses away from the cell body', choices:['a long, slender projection of a neuron that sends impulses away from the cell body','branches that project from cell bodies and can inhibit or stimulate other neurons','distal terminations of an axon\'s branches that release chemicals','insulating layer that speeds up neural impulses'] },
+      { type:'mc-term', term:'Myelin sheath', answer:'insulating layer of Schwann cells that covers axons; speeds up neural impulses and protects the axon', choices:['insulating layer of Schwann cells that covers axons; speeds up neural impulses and protects the axon','cells that maintain homeostasis by insulating neurons and aiding regeneration','distal terminations of axon branches that release chemicals','a long projection that sends impulses away from the cell body'] },
+      { type:'mc-term', term:'Schwann cells', answer:'cells that maintain homeostasis by insulating neurons, providing support, aiding regeneration, and destroying pathogens', choices:['cells that maintain homeostasis by insulating neurons, providing support, aiding regeneration, and destroying pathogens','insulating layer that covers axons and speeds up impulses','specialized cells that communicate via electrical and chemical signals','branches projecting from cell bodies of neurons'] },
+      { type:'mc-term', term:'Wallerian degeneration', answer:'axon degeneration that occurs distal to a nerve cut or crush injury', choices:['axon degeneration that occurs distal to a nerve cut or crush injury','the process of nerve growth and repair in the peripheral nervous system','neural reorganization in the brain after hand transplantation','sensation that a missing limb is still attached to the body'] },
+      { type:'mc-term', term:'Cortical reintegration', answer:'neural reorganization that occurs in the brain in response to hand transplantation', choices:['neural reorganization that occurs in the brain in response to hand transplantation','axon degeneration distal to a nerve injury','the main sensory receptive area for touch','a representation of a human being'] },
+      { type:'mc-term', term:'Phantom limb pain', answer:'sensation that an amputated or missing limb is still attached to the body', choices:['sensation that an amputated or missing limb is still attached to the body','neural reorganization after hand transplantation','axon degeneration distal to a nerve cut','the process of nerve growth and repair'] },
+      { type:'mc-term', term:'fMRI', answer:'MRI procedure that measures brain activity by detecting changes in blood flow', choices:['MRI procedure that measures brain activity by detecting changes in blood flow','noninvasive method using magnetic fields to polarize neurons','primary motor area controlling execution of movement','the main sensory receptive area for touch'] },
+      { type:'mc-term', term:'TMS', answer:'noninvasive method of measuring brain activity using a magnetic field to induce polarization of neurons', choices:['noninvasive method of measuring brain activity using a magnetic field to induce polarization of neurons','MRI procedure that measures brain activity via blood flow changes','neural reorganization in the brain after transplantation','primary area of the brain for generating motor impulses'] },
+      { type:'mc-term', term:'Primary motor cortex', answer:'primary motor area of the brain that generates neural impulses controlling execution of movement', choices:['primary motor area of the brain that generates neural impulses controlling execution of movement','the main sensory receptive area for the sense of touch','a representation of a human being used in various fields','neural reorganization after hand transplantation'] },
+      { type:'mc-term', term:'Primary somatosensory cortex', answer:'the main sensory receptive area for the sense of touch', choices:['the main sensory receptive area for the sense of touch','primary motor area generating impulses that control movement','a representation of a human being','noninvasive method using magnetic fields to measure brain activity'] },
+      { type:'mc-term', term:'Dendrites', answer:'branches that project from cell bodies of neurons; can inhibit or stimulate other neurons', choices:['branches that project from cell bodies of neurons; can inhibit or stimulate other neurons','a long projection that sends impulses away from the cell body','distal terminations of axon branches that release chemicals','the main part of the neuron containing the nucleus'] },
+      { type:'mc-term', term:'Cell body', answer:'main part of the neuron where dendrites branch; contains organelles and the nucleus', choices:['main part of the neuron where dendrites branch; contains organelles and the nucleus','branches projecting from neurons that can inhibit or stimulate','insulating layer of Schwann cells covering axons','distal terminations of axon branches'] },
+
+      // --- True / False (20) ---
+      { type:'tf', statement:'Peripheral nerves include the brain and spinal cord.', answer:false },
+      { type:'tf', statement:'Neurons communicate via electrical and chemical signals.', answer:true },
+      { type:'tf', statement:'Motor neurons sense sensory input and relay information to the brain.', answer:false },
+      { type:'tf', statement:'Sensory neurons relay sensory information to the sensory cortex in the brain.', answer:true },
+      { type:'tf', statement:'Dendrites are long projections that send impulses away from the cell body.', answer:false },
+      { type:'tf', statement:'The axon is also known as a nerve fiber.', answer:true },
+      { type:'tf', statement:'Axon terminals release chemicals at the distal terminations of axon branches.', answer:true },
+      { type:'tf', statement:'Upper motor neurons connect the brainstem and spinal cord directly to muscle fibers.', answer:false },
+      { type:'tf', statement:'Lower motor neurons connect the brainstem and spinal cord to muscle fibers.', answer:true },
+      { type:'tf', statement:'The primary function of the myelin sheath is to slow down neural impulses.', answer:false },
+      { type:'tf', statement:'Schwann cells aid in nerve regeneration and help destroy pathogens.', answer:true },
+      { type:'tf', statement:'Peripheral nerves may regenerate at a rate of up to one inch per month.', answer:true },
+      { type:'tf', statement:'Wallerian degeneration occurs proximal to a nerve injury, near the cell body.', answer:false },
+      { type:'tf', statement:'Cortical reintegration is neural reorganization that occurs in the brain after hand transplantation.', answer:true },
+      { type:'tf', statement:'Phantom limb pain is a condition where transplanted hands feel numb permanently.', answer:false },
+      { type:'tf', statement:'fMRI measures brain activity by detecting changes in blood flow.', answer:true },
+      { type:'tf', statement:'TMS uses X-rays to measure brain activity.', answer:false },
+      { type:'tf', statement:'A homunculus is a representation of a human being used in various fields of study.', answer:true },
+      { type:'tf', statement:'A post-operative splint is applied several months after surgery to aid rehabilitation.', answer:false },
+      { type:'tf', statement:'Passive range of motion involves a therapist moving the joint with no effort from the patient.', answer:true }
+    ];
+
+    var quizState = {
+      questions: [],
+      current: 0,
+      score: 0,
+      selected: null,
+      answered: false,
+      attempts: []
+    };
+
+    function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+      }
+      return arr;
+    }
+
+    function pickQuestions() {
+      var pool = QUESTIONS.slice();
+      shuffle(pool);
+      return pool.slice(0, 10);
+    }
+
+    function renderProgress() {
+      var pct = ((quizState.current) / quizState.questions.length) * 100;
+      return '<div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:' + pct + '%"></div></div>' +
+             '<p class="quiz-progress-label">Question ' + (quizState.current + 1) + ' of ' + quizState.questions.length + '</p>';
+    }
+
+    function renderQuestion() {
+      var q = quizState.questions[quizState.current];
+      var html = renderProgress();
+
+      if (q.type === 'tf') {
+        html += '<p class="quiz-question-label">True or False</p>';
+        html += '<p class="quiz-question">' + q.statement + '</p>';
+        html += '<div class="quiz-choices">';
+        html += '<button class="quiz-choice" data-value="true" onclick="selectAnswer(true)">True</button>';
+        html += '<button class="quiz-choice" data-value="false" onclick="selectAnswer(false)">False</button>';
+        html += '</div>';
+      } else if (q.type === 'mc-def') {
+        html += '<p class="quiz-question-label">Which term matches this definition?</p>';
+        html += '<p class="quiz-question"><span class="quiz-def">' + q.def + '</span></p>';
+        var choices = shuffle(q.choices.slice());
+        html += '<div class="quiz-choices">';
+        for (var i = 0; i < choices.length; i++) {
+          html += '<button class="quiz-choice" data-value="' + choices[i] + '" onclick="selectAnswer(\'' + choices[i].replace(/'/g, "\\'") + '\')">' + choices[i] + '</button>';
+        }
+        html += '</div>';
+      } else {
+        html += '<p class="quiz-question-label">What is the definition of this term?</p>';
+        html += '<p class="quiz-question"><span class="quiz-def">' + q.term + '</span></p>';
+        var choices = shuffle(q.choices.slice());
+        html += '<div class="quiz-choices">';
+        for (var i = 0; i < choices.length; i++) {
+          html += '<button class="quiz-choice" data-value="' + i + '" onclick="selectAnswer(\'' + choices[i].replace(/'/g, "\\'") + '\')">' + choices[i] + '</button>';
+        }
+        html += '</div>';
+      }
+
+      html += '<button class="quiz-submit-btn" id="quiz-submit" onclick="submitAnswer()" disabled>Submit Answer</button>';
+
+      document.getElementById('quiz-content').innerHTML = html;
+      quizState.selected = null;
+      quizState.answered = false;
+    }
+
+    window.selectAnswer = function (val) {
+      if (quizState.answered) return;
+      quizState.selected = val;
+      var btns = document.querySelectorAll('.quiz-choice');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('selected');
+        var bVal = btns[i].getAttribute('data-value');
+        if (bVal === String(val)) btns[i].classList.add('selected');
+      }
+      document.getElementById('quiz-submit').disabled = false;
+    };
+
+    window.submitAnswer = function () {
+      if (quizState.answered || quizState.selected === null) return;
+      quizState.answered = true;
+
+      var q = quizState.questions[quizState.current];
+      var correct;
+      if (q.type === 'tf') {
+        correct = (quizState.selected === q.answer);
+      } else {
+        correct = (quizState.selected === q.answer);
+      }
+
+      if (correct) quizState.score++;
+
+      // Highlight correct/incorrect
+      var btns = document.querySelectorAll('.quiz-choice');
+      for (var i = 0; i < btns.length; i++) {
+        var bVal = btns[i].getAttribute('data-value');
+        if (q.type === 'tf') {
+          if (bVal === String(q.answer)) btns[i].classList.add('correct');
+          else if (btns[i].classList.contains('selected') && !correct) btns[i].classList.add('incorrect');
+        } else {
+          if (btns[i].textContent === q.answer) btns[i].classList.add('correct');
+          else if (btns[i].classList.contains('selected') && !correct) btns[i].classList.add('incorrect');
+        }
+        btns[i].style.pointerEvents = 'none';
+      }
+
+      // Change submit to next/finish
+      var submitBtn = document.getElementById('quiz-submit');
+      if (quizState.current < quizState.questions.length - 1) {
+        submitBtn.textContent = 'Next Question';
+        submitBtn.disabled = false;
+        submitBtn.onclick = function () {
+          quizState.current++;
+          renderQuestion();
+        };
+      } else {
+        submitBtn.textContent = 'See Results';
+        submitBtn.disabled = false;
+        submitBtn.onclick = function () {
+          showResults();
+        };
+      }
+    };
+
+    function showResults() {
+      var pct = Math.round((quizState.score / quizState.questions.length) * 100);
+      quizState.attempts.push({ score: quizState.score, total: quizState.questions.length, pct: pct });
+
+      var html = '<div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:100%"></div></div>';
+      html += '<p class="quiz-results-heading">Quiz Complete!</p>';
+      html += '<p class="quiz-results-score">You scored <strong>' + quizState.score + '/' + quizState.questions.length + '</strong> (' + pct + '%)</p>';
+
+      if (pct >= 80) {
+        html += '<p class="quiz-results-msg quiz-pass">Great job! You passed!</p>';
+      } else {
+        html += '<p class="quiz-results-msg quiz-fail">You need 80% to pass. Give it another try!</p>';
+        html += '<button class="quiz-submit-btn" onclick="startQuiz()">Retake Quiz</button>';
+      }
+
+      // Attempt history
+      html += '<div class="quiz-attempts">';
+      html += '<p class="quiz-attempts-heading">Attempt History</p>';
+      for (var i = 0; i < quizState.attempts.length; i++) {
+        var a = quizState.attempts[i];
+        var passed = a.pct >= 80;
+        html += '<p class="quiz-attempt' + (passed ? ' quiz-attempt-pass' : ' quiz-attempt-fail') + '">Attempt #' + (i + 1) + ': ' + a.score + '/' + a.total + ' (' + a.pct + '%)' + (passed ? ' &check;' : '') + '</p>';
+      }
+      html += '</div>';
+
+      document.getElementById('quiz-content').innerHTML = html;
+    }
+
+    window.startQuiz = function () {
+      quizState.questions = pickQuestions();
+      quizState.current = 0;
+      quizState.score = 0;
+      quizState.selected = null;
+      quizState.answered = false;
+      renderQuestion();
+    };
+
+    window.openQuiz = function () {
+      document.getElementById('quiz-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      startQuiz();
+    };
+
+    window.closeQuiz = function () {
+      document.getElementById('quiz-overlay').classList.remove('active');
+      document.body.style.overflow = '';
+    };
+  })();
   </script>
 </body>
 </html>
