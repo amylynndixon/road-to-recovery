@@ -194,6 +194,31 @@ img {
   margin-bottom: 50px;
 }
 
+/* Nerve regeneration hover-to-play GIF */
+.nerve-regen-hover {
+  position: relative;
+  cursor: pointer;
+}
+
+.nerve-regen-hover .nerve-regen-gif {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nerve-regen-hover:hover .nerve-regen-gif {
+  opacity: 1;
+}
+
+.nerve-regen-hover:hover .nerve-regen-static {
+  opacity: 0;
+}
+
 #portfolio .portfolio-text {
   max-width: 560px;
   margin-left: auto;
