@@ -36,6 +36,7 @@
             <p class="col-white">There are a lot of things to consider after receiving a hand transplant; New medications to take, a new daily routine and intensive hand therapy. For someone who has just received a hand transplant, life is very different than it was before.</p>
             <p class="col-white"><a href="#peripheralNerves" class="contact-link" id="peripheralNervesBack">Peripheral nerves</a> (any part of the nervous system other than the brain and spinal cord) play an important role in regaining function of a donor hand. After an amputation, nerves become injured and degenerate. Once major nerves have been reattached and a hand is transplanted, nerve regeneration begins to slowly take place. The following pages tell a story of how peripheral nerves regenerate, how the donor hand is reintegrated in the brain after hand transplantation, and why rehabilitation therapy is critical to the process.</p>
             <p class="col-white hover-hint"><em>*Note: All links within this page activate on hover (hold hover for 2 seconds).</em></p>
+            <p class="hover-toggle-wrapper"><a href="#" id="hover-toggle" class="hover-toggle">Turn off hover-activation</a></p>
           </div>
         </div>
       </div>
@@ -447,6 +448,17 @@
   </footer>
 
   <script>
+    // Hover activation state — on by default
+    let hoverEnabled = true;
+
+    // Toggle handler
+    const hoverToggle = document.getElementById('hover-toggle');
+    hoverToggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      hoverEnabled = !hoverEnabled;
+      this.textContent = hoverEnabled ? 'Turn off hover-activation' : 'Turn on hover-activation';
+    });
+
     // Hover-only navigation — 2 second hover triggers smooth scroll
     // Designed for hand transplant patients who may not be able to click
     const navLinks = document.querySelectorAll('.links a');
@@ -455,6 +467,7 @@
 
     navLinks.forEach(link => {
       link.addEventListener('mouseenter', function () {
+        if (!hoverEnabled) return;
         activeLink = this;
         // Add visual fill indicator
         this.style.transition = 'background-color 2s linear';
@@ -503,6 +516,7 @@
       let termTimer = null;
 
       anchor.addEventListener('mouseenter', function () {
+        if (!hoverEnabled) return;
         const self = this;
         self.style.transition = 'opacity 2s linear';
         self.style.opacity = '0.6';
