@@ -592,24 +592,24 @@ img {
 
 /* Definition tooltips */
 .def-tooltip {
+  display: none;
   position: absolute;
-  background: #333;
-  color: #fff;
+  background: #333 !important;
+  color: #fff !important;
   font-size: 13px;
   line-height: 1.4;
   padding: 8px 12px;
   border-radius: 6px;
   max-width: 280px;
-  z-index: 1000;
+  z-index: 9999;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
   font-weight: normal;
   font-family: "Georgia", serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .def-tooltip.visible {
-  opacity: 1;
+  display: block !important;
 }
 
 .def-tooltip::after {
@@ -620,6 +620,11 @@ img {
   transform: translateX(-50%);
   border: 6px solid transparent;
   border-top-color: #333;
+}
+
+[data-definition] {
+  cursor: help;
+  border-bottom: 1px dashed currentColor !important;
 }
 
 .about-link {
