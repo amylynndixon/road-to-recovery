@@ -523,6 +523,12 @@ img {
 
 .figure-with-caption {
   position: relative;
+  text-align: center;
+}
+
+.figure-with-caption img {
+  width: 75%;
+  max-width: 75%;
 }
 
 .figure-with-caption .figure-caption {
