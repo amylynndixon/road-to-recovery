@@ -323,6 +323,16 @@ img {
   color: #336699;
 }
 
+.main-heading-regen {
+  font-family: "Georgia", serif;
+  text-align: center;
+  font-weight: normal;
+  font-size: 60px;
+  line-height: 80px;
+  color: #7a9bb5;
+  margin-bottom: 8px;
+}
+
 .main-heading-five {
   font-family: "Georgia", serif;
   text-align: left;
@@ -1118,7 +1128,8 @@ img {
   .main-heading-four,
   .main-heading-five,
   .main-heading-six,
-  .main-heading-seven {
+  .main-heading-seven,
+  .main-heading-regen {
     font-size: 32px;
     line-height: 40px;
   }
