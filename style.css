@@ -1107,9 +1107,31 @@ img {
   text-align: center;
 }
 
+.foot-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
 #foot-logo > img {
   width: 96px;
   height: 96px;
+}
+
+#hopkins-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 10px 14px;
+}
+
+#hopkins-logo > img {
+  height: 76px;
+  width: auto;
+  display: block;
 }
 
 .mastfoot p {
