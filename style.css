@@ -1347,12 +1347,14 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Light mode hover: preview the dark mode look */
 #theme-toggle:hover {
-  color: #ADD626;
-  border-color: #ADD626;
+  background: #000;
+  color: #cccccc;
+  border-color: #cccccc;
 }
 
 #theme-toggle .theme-icon-sun { display: none; }
@@ -1403,9 +1405,18 @@ img {
   border-bottom-color: var(--rtr-text-muted);
 }
 [data-theme="dark"] #theme-toggle { color: var(--rtr-text); }
+/* Dark mode hover: rainbow halo with light blue pill + dark blue ink */
 [data-theme="dark"] #theme-toggle:hover {
-  color: #ADD626;
-  border-color: #ADD626;
+  background: #cce5ff;
+  color: #002060;
+  border-color: #002060;
+  box-shadow:
+    0 0 0 1px #ff0000,
+    0 0 0 2px #ff8c00,
+    0 0 0 3px #ffd700,
+    0 0 0 4px #00b050,
+    0 0 0 5px #1e90ff,
+    0 0 0 6px #8a2be2;
 }
 
 /* Skip link */
