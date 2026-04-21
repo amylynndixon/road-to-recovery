@@ -1282,7 +1282,25 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
+  overflow: hidden;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover-hold fill indicator (accessible activation for users who can't click) */
+.theme-toggle-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: rgba(173, 214, 38, 0.4);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#theme-toggle > :not(.theme-toggle-fill) {
+  position: relative;
+  z-index: 1;
 }
 
 @property --gemini-angle {
@@ -1542,13 +1560,27 @@ img {
   filter: brightness(0) invert(1);
 }
 
-/* Grayscale all imagery (except footer logos and color-critical figures) */
+/* Grayscale all imagery by default in dark mode; hover reveals color */
 [data-theme="dark"] img:not(#foot-logo img):not(#hopkins-logo img):not(.keep-color) {
   filter: grayscale(1) brightness(0.85);
+  transition: filter 0.3s ease;
+}
+
+[data-theme="dark"] img:not(#foot-logo img):not(#hopkins-logo img):not(.keep-color):hover {
+  filter: none;
 }
 
 [data-theme="dark"] .keep-color {
   filter: none;
+}
+
+/* Neuron diagrams in dark mode: dark gray rest, pale yellow on hover (override generic grayscale) */
+[data-theme="dark"] .neuron-diagram img {
+  filter: brightness(0) invert(0.35) !important;
+}
+
+[data-theme="dark"] .neuron-diagram:hover img {
+  filter: brightness(0) saturate(100%) invert(89%) sepia(15%) saturate(900%) hue-rotate(355deg) brightness(102%) !important;
 }
 
 /* Neuron diagrams: medium gray so they're visible/hoverable; yellow on hover */
