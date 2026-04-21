@@ -78,6 +78,7 @@ html {
 body {
   text-shadow: none;
   background: #fff;
+  color: #000;
   padding: 0;
 }
 
@@ -117,18 +118,6 @@ img {
 /* Color Swatches */
 .col-white {
   color: #fff !important;
-}
-.col-black {
-  color: #000 !important;
-}
-.col-red {
-  color: #D82546;
-}
-.col-green {
-  color: #26B1AA;
-}
-.col-blue {
-  color: #64B2D6;
 }
 
 /* Selection color */
@@ -547,31 +536,6 @@ img {
   margin-left: -140px;
 }
 
-.hover-hint {
-  font-size: 14px;
-  opacity: 0.7;
-  margin-bottom: 0 !important;
-}
-
-.hover-toggle-wrapper {
-  margin-top: 0;
-  margin-bottom: 38px;
-}
-
-.hover-toggle {
-  font-family: "Georgia", serif;
-  font-size: 14px;
-  color: #ffde46 !important;
-  opacity: 0.7;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(255, 222, 70, 0.4) !important;
-}
-
-.hover-toggle:hover {
-  color: #ADD626 !important;
-  opacity: 1;
-}
-
 /* Sensory text beside neuron diagrams */
 .sensory-text {
   flex: 1;
@@ -665,12 +629,12 @@ img {
 .neuron-diagram img {
   height: 500px;
   width: auto;
-  filter: brightness(0) saturate(100%) invert(18%) sepia(30%) saturate(1500%) hue-rotate(220deg) brightness(80%);
+  filter: brightness(0) invert(0.55);
   transition: filter 0.3s ease;
 }
 
 .neuron-diagram:hover img {
-  filter: brightness(0) saturate(100%) invert(80%) sepia(60%) saturate(500%) hue-rotate(5deg) brightness(105%);
+  filter: brightness(0) saturate(100%) invert(89%) sepia(15%) saturate(900%) hue-rotate(355deg) brightness(102%);
 }
 
 .diagram-label {
@@ -718,22 +682,6 @@ img {
   z-index: 10;
 }
 
-
-/* Sub-text colors */
-.sub-text-one {
-  padding-right: 150px;
-  color: #336699;
-}
-
-.sub-text-two {
-  padding-right: 150px;
-  color: #000000;
-}
-
-.sub-text-three {
-  padding-right: 150px;
-  color: #27297f;
-}
 
 /* ===================================
    Link Styles per Section
@@ -795,12 +743,6 @@ img {
 
 #about .text-col p {
   text-align: justify;
-}
-
-.services-link {
-  color: #A01445 !important;
-  font-weight: bold;
-  border-bottom: none !important;
 }
 
 .features-link {
@@ -1262,13 +1204,6 @@ img {
     width: 100%;
   }
 
-  /* Sub-text — remove right padding on mobile */
-  .sub-text-one,
-  .sub-text-two,
-  .sub-text-three {
-    padding-right: 0;
-  }
-
   /* Features text — full width */
   .features-text {
     max-width: 100%;
@@ -1421,12 +1356,16 @@ img {
   color: var(--rtr-text);
   border-bottom-color: var(--rtr-text-muted);
 }
-[data-theme="dark"] #theme-toggle { color: var(--rtr-text); }
-/* Dark mode hover: medium gray interior + charcoal text + luminous rainbow stroke */
+/* Dark mode rest: medium gray fill (matches the hover bg) */
+[data-theme="dark"] #theme-toggle {
+  background: #888;
+}
+
+/* Dark mode hover: previews light mode — white interior + black text + luminous rainbow stroke */
 [data-theme="dark"] #theme-toggle:hover {
-  color: #1a1a1a;
+  color: #000;
   background:
-    linear-gradient(#888, #888) padding-box,
+    linear-gradient(#fafafa, #fafafa) padding-box,
     conic-gradient(from var(--gemini-angle),
       #4285F4, #9B72F4, #F4B400, #DB4437, #0F9D58, #4285F4) border-box;
   border-color: transparent;
@@ -1437,7 +1376,7 @@ img {
   animation: gemini-spin 3s linear infinite;
 }
 
-[data-theme="dark"] #theme-toggle:hover .theme-toggle-label > span { color: #1a1a1a; }
+[data-theme="dark"] #theme-toggle:hover .theme-toggle-label > span { color: #000; }
 
 /* Sun icon: dim bulb at rest, lit (light yellow + rays) on hover */
 .theme-icon-sun .sun-rays { opacity: 0; transition: opacity 0.25s ease; }
@@ -1554,10 +1493,7 @@ img {
 [data-theme="dark"] .sub-heading-one,
 [data-theme="dark"] .sub-heading-two,
 [data-theme="dark"] .sub-heading-three,
-[data-theme="dark"] .sub-heading-five-one,
-[data-theme="dark"] .sub-text-one,
-[data-theme="dark"] .sub-text-two,
-[data-theme="dark"] .sub-text-three {
+[data-theme="dark"] .sub-heading-five-one {
   color: var(--rtr-text-muted);
 }
 
@@ -1569,23 +1505,19 @@ img {
 
 /* Inline accent links — neutralize bright color treatments */
 [data-theme="dark"] .about-link,
-[data-theme="dark"] .services-link,
 [data-theme="dark"] .features-link,
 [data-theme="dark"] .def-link,
 [data-theme="dark"] #portfolio .def-link,
 [data-theme="dark"] #reintegration .def-link,
-[data-theme="dark"] #rehabilitation .def-link,
-[data-theme="dark"] .hover-toggle {
+[data-theme="dark"] #rehabilitation .def-link {
   color: #e0d088 !important;
   text-shadow: none !important;
   border-bottom-color: rgba(224, 208, 136, 0.4) !important;
 }
 
 [data-theme="dark"] .about-link:hover,
-[data-theme="dark"] .services-link:hover,
 [data-theme="dark"] .features-link:hover,
 [data-theme="dark"] .def-link:hover,
-[data-theme="dark"] .hover-toggle:hover,
 [data-theme="dark"] a:hover {
   color: #ADD626 !important;
 }
@@ -1602,23 +1534,25 @@ img {
   background: transparent;
   padding: 0;
 }
-[data-theme="dark"] #hopkins-logo > img,
-[data-theme="dark"] #foot-logo > img {
+[data-theme="dark"] #hopkins-logo > img {
   filter: invert(1) grayscale(1) brightness(0.95);
 }
 
-/* Grayscale all imagery (except footer logos handled above) */
-[data-theme="dark"] img:not(#foot-logo img):not(#hopkins-logo img) {
+[data-theme="dark"] #foot-logo > img {
+  filter: brightness(0) invert(1);
+}
+
+/* Grayscale all imagery (except footer logos and color-critical figures) */
+[data-theme="dark"] img:not(#foot-logo img):not(#hopkins-logo img):not(.keep-color) {
   filter: grayscale(1) brightness(0.85);
 }
 
+[data-theme="dark"] .keep-color {
+  filter: none;
+}
+
 /* Neuron diagrams: medium gray so they're visible/hoverable; yellow on hover */
-[data-theme="dark"] .neuron-diagram img {
-  filter: brightness(0) invert(0.55);
-}
-[data-theme="dark"] .neuron-diagram:hover img {
-  filter: brightness(0) saturate(100%) invert(80%) sepia(60%) saturate(500%) hue-rotate(5deg) brightness(105%);
-}
+/* Neuron diagram dark-mode overrides removed — base rule (gray → pale yellow) now applies in both modes */
 
 /* Brain label flips to dark + light gray */
 [data-theme="dark"] .brain-label {
