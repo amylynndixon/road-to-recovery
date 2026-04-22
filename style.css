@@ -1334,13 +1334,22 @@ img {
 [data-theme="dark"] #theme-toggle .theme-icon-moon { display: none; }
 
 @media only screen and (max-width: 767px) {
+  /* Theme toggle: full-width banner below the nav */
   #theme-toggle {
-    top: 8px;
-    right: 8px;
-    height: 28px;
+    position: static;
+    transform: none;
+    top: auto;
+    right: auto;
+    display: flex;
+    width: 100%;
+    margin-top: 8px;
+    height: 32px;
     padding: 0 10px;
     font-size: 10px;
     gap: 4px;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
   #theme-toggle svg { width: 14px; height: 14px; }
   .desktop-nav { padding-right: 0; }
@@ -1469,7 +1478,7 @@ img {
     background-image: url('images/NerveRoad_HeroBackgroundMobile.jpg');
     background-position: top center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
   }
 }
 
