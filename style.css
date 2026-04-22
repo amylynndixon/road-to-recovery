@@ -1232,11 +1232,11 @@ img {
     padding: 0 20px;
   }
 
-  /* Nav — allow height to grow for wrapped items */
+  /* Nav — allow height to grow for wrapped items; toggle sits flush at bottom */
   .masthead {
     height: auto;
     padding-top: 8px;
-    padding-bottom: 8px;
+    padding-bottom: 0;
   }
 
   .desktop-nav {
@@ -1313,11 +1313,13 @@ img {
   to { --gemini-angle: 360deg; }
 }
 
-/* Light mode hover: black fill, gunmetal text/icon, same black stroke */
-#theme-toggle:hover {
-  background: #000;
-  color: #95a5b8;
-  border-color: #000;
+/* Light mode hover: black fill, gunmetal text/icon, same black stroke. Hover-capable devices only. */
+@media (hover: hover) and (pointer: fine) {
+  #theme-toggle:hover {
+    background: #000;
+    color: #95a5b8;
+    border-color: #000;
+  }
 }
 
 /* Light mode pressed: same as hover */
@@ -1388,32 +1390,36 @@ img {
   background: #888;
 }
 
-/* Dark mode hover: previews light mode — white interior + black text + luminous rainbow stroke */
-[data-theme="dark"] #theme-toggle:hover {
-  color: #000;
-  background:
-    linear-gradient(#fafafa, #fafafa) padding-box,
-    conic-gradient(from var(--gemini-angle),
-      #4285F4, #9B72F4, #F4B400, #DB4437, #0F9D58, #4285F4) border-box;
-  border-color: transparent;
-  box-shadow:
-    0 0 10px rgba(155, 114, 244, 0.65),
-    0 0 22px rgba(66, 133, 244, 0.45),
-    0 0 36px rgba(244, 180, 0, 0.25);
-  animation: gemini-spin 3s linear infinite;
-}
-
-[data-theme="dark"] #theme-toggle:hover .theme-toggle-label > span { color: #000; }
-
-/* Sun icon: dim bulb at rest, lit (light yellow + rays) on hover */
+/* Sun icon: dim bulb at rest (rays revealed on hover via the block below) */
 .theme-icon-sun .sun-rays { opacity: 0; transition: opacity 0.25s ease; }
-[data-theme="dark"] #theme-toggle:hover .theme-icon-sun .sun-bulb {
-  fill: #ffe680;
-  stroke: #ffe680;
-}
-[data-theme="dark"] #theme-toggle:hover .theme-icon-sun .sun-rays {
-  opacity: 1;
-  stroke: #ffe680;
+
+/* Dark mode hover state — gated to hover-capable devices to prevent sticky-hover after touch tap */
+@media (hover: hover) and (pointer: fine) {
+  /* Previews light mode: white interior + black text + luminous rainbow stroke */
+  [data-theme="dark"] #theme-toggle:hover {
+    color: #000;
+    background:
+      linear-gradient(#fafafa, #fafafa) padding-box,
+      conic-gradient(from var(--gemini-angle),
+        #4285F4, #9B72F4, #F4B400, #DB4437, #0F9D58, #4285F4) border-box;
+    border-color: transparent;
+    box-shadow:
+      0 0 10px rgba(155, 114, 244, 0.65),
+      0 0 22px rgba(66, 133, 244, 0.45),
+      0 0 36px rgba(244, 180, 0, 0.25);
+    animation: gemini-spin 3s linear infinite;
+  }
+
+  [data-theme="dark"] #theme-toggle:hover .theme-toggle-label > span { color: #000; }
+
+  [data-theme="dark"] #theme-toggle:hover .theme-icon-sun .sun-bulb {
+    fill: #ffe680;
+    stroke: #ffe680;
+  }
+  [data-theme="dark"] #theme-toggle:hover .theme-icon-sun .sun-rays {
+    opacity: 1;
+    stroke: #ffe680;
+  }
 }
 
 /* Pressed state — light gray, kills the gradient + glow */
@@ -1426,7 +1432,7 @@ img {
 }
 [data-theme="dark"] #theme-toggle:active .theme-toggle-label > span { color: #333; }
 
-@media (prefers-reduced-motion: reduce) {
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
   [data-theme="dark"] #theme-toggle:hover { animation: none; }
 }
 

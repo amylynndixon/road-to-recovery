@@ -1148,29 +1148,33 @@
 
     sync();
 
-    // Click: immediate activation
+    // Click / tap: immediate activation
     btn.addEventListener('click', function () {
       clearTimeout(hoverTimer);
       resetFill(true);
       toggleTheme();
     });
 
-    // Hover-hold: 2-second dwell triggers toggle (accessible fallback for users who can't click)
-    btn.addEventListener('mouseenter', function () {
-      if (fill) {
-        fill.style.transition = 'width 2s linear';
-        fill.style.width = '100%';
-      }
-      hoverTimer = setTimeout(function () {
-        toggleTheme();
-        resetFill(false);
-      }, 2000);
-    });
+    // Hover-hold: 2-second dwell triggers toggle. Hover-capable devices only
+    // (skip on touch so a tap doesn't double-fire and so the fill doesn't run).
+    var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (canHover) {
+      btn.addEventListener('mouseenter', function () {
+        if (fill) {
+          fill.style.transition = 'width 2s linear';
+          fill.style.width = '100%';
+        }
+        hoverTimer = setTimeout(function () {
+          toggleTheme();
+          resetFill(false);
+        }, 2000);
+      });
 
-    btn.addEventListener('mouseleave', function () {
-      clearTimeout(hoverTimer);
-      resetFill(true);
-    });
+      btn.addEventListener('mouseleave', function () {
+        clearTimeout(hoverTimer);
+        resetFill(true);
+      });
+    }
   })();
   </script>
 </body>
